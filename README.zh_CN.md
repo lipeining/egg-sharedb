@@ -57,7 +57,7 @@ exports.sharedb = {
 
 在app.on('server') 保存得到的server,
 在app.ready回调函数中，调用
-app.sharedb.init(server);
+app.sharedb.init(server, app);
 
 ## 详细配置
 
