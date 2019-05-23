@@ -11,8 +11,11 @@
     "egg-plugin"
   ],
   "dependencies": {
+    "debug": "^4.1.1",
     "rich-text": "^3.1.0",
     "sharedb": "^1.0.0-beta.23",
+    "sharedb-mingo-memory": "^1.1.0",
+    "sharedb-mongo": "^1.0.0-beta.8",
     "uuid": "^3.3.2",
     "websocket-json-stream": "0.0.3",
     "ws": "^7.0.0"
@@ -32,7 +35,7 @@
   },
   "scripts": {
     "test": "npm run lint -- --fix && egg-bin pkgfiles && npm run test-local",
-    "test-local": "egg-bin test",
+    "test-local": "DEBUG=egg-sharedb:* egg-bin test",
     "cov": "egg-bin cov",
     "lint": "eslint .",
     "ci": "egg-bin pkgfiles --check && npm run lint && npm run cov",

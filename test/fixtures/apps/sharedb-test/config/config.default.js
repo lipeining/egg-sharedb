@@ -7,8 +7,11 @@ exports.keys = '123456';
  * @property {String} SOME_KEY - some description
  */
 exports.sharedb = {
-  // client 单实例， clients多实例
-  client: {
-    // 可以指定 database, pubsub
-  },
+    // client 单实例， clients多实例
+    client: {
+        // 可以指定 database, pubsub
+        database: {
+            type: 'mingo-memory'
+        }
+    },
 };
