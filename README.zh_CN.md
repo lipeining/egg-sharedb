@@ -45,6 +45,27 @@ egg-sharedb 版本 | egg 1.x
 
 ## 开启插件
 
+
+```js
+config.xxx.js
+/**
+ * egg-sharedb default config
+ *
+ * database: { }
+ * database: { type: 'memory' }
+ * database: { type: 'mongo', url: 'mongodb://' }
+ * database: { type: 'mingo-memory' }
+ *
+ * // 暂时不使用pubsub,需要指定redisClient.
+ * pubsub: {}
+ * pubsub: { type: 'memory' }
+ * pubsub: { type: 'redis-pubsub', client: '' }
+ *
+ * @member Config#sharedb
+ * @property {String} SOME_KEY - some description
+ */
+exports.sharedb = {}
+```
 ```js
 // config/plugin.js
 exports.sharedb = {
@@ -54,10 +75,18 @@ exports.sharedb = {
 ```
 
 ## 使用场景
+最佳实践：使用MongoDB进行存储，遵循sharedb的API，正确地建立初始化文档内容。
+普通测试环境，可以使用内存存储。
 
-在app.on('server') 保存得到的server,
-在app.ready回调函数中，调用
-app.sharedb.init(server, app);
+由服务端或者用户端保证文档的建立和初始化，之后的更新可以同步。
+const doc = app.sharedb.get(collectionName,documentId);
+if(doc.type===null) {
+  doc.create([], 'rich-text');
+}
+// doc.subscribe();
+用户可以自定义一个包装函数，保证新创建的文档不会和旧的文档相同。
+如果想要操作数据库里面的ops,snapshots等，需要额外使用mongodb进行数据操作。
+但是这样是无法保证数据的可恢复性。
 
 ## 详细配置
 
