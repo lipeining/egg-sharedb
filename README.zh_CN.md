@@ -74,6 +74,41 @@ exports.sharedb = {
 };
 ```
 
+```js
+// app.js
+app.ready()
+// 注册中间件函数
+// no need to send back the error message the next('message') help us!
+// if you want to send message ,use Object ,not string!
+// 如果是服务器node使用的话，不会有session。
+sharedb.use('connect', function(request, next) {
+    debug('sharedb on connnect');
+    if (request.req) {
+        debug('sharedb Parsing session from request...');
+        const sessionOpts = {
+            maxAge: 24 * 3600 * 1000, // ms
+            key: 'EGG_SESS',
+            httpOnly: true,
+            encrypt: true,
+        };
+        // 可以得到eggjs内置的session设置
+        debug(app.config.session);
+        const sessionParser = session(app.config.session || sessionOpts, app);
+        const ctx = app.createContext(request.req, new http.ServerResponse(request.req));
+        sessionParser(ctx, () => {
+            debug('sharedb Session is parsed!');
+            // 无法打印到直接的sessionSymbol
+            debug(JSON.stringify(ctx, null, 2));
+            debug(ctx.session);
+            // 在这里判断是否可以连接到对应的数据库吗？
+            next();
+        });
+    } else {
+        next();
+    }
+});
+```
+
 ## 使用场景
 最佳实践：使用MongoDB进行存储，遵循sharedb的API，正确地建立初始化文档内容。
 普通测试环境，可以使用内存存储。
