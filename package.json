@@ -18,7 +18,7 @@
     "sharedb-mongo": "^1.0.0-beta.8",
     "uuid": "^3.3.2",
     "websocket-json-stream": "0.0.3",
-    "ws": "^7.0.0"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "autod": "^3.0.1",
